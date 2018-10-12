@@ -51,4 +51,13 @@
 ## GraRep
 
 ### 思路
-- 引入了
+- 引入了一个超参数k来表示当前节点与距离当前节点k步的节点的关系
+- 作者通过描述网络的邻接矩阵和对应的顶点的出度矩阵，来定义了一个转移矩阵(和TADW的转移矩阵很类似)，也同样利用矩阵的乘幂来表示走了k步。然后借用NCE(noise contrastive estimation)来定义要优化的目标函数。在优化目标函数时，使用了矩阵分解(SVD)来得到第k步的representation vector，最后将k个representation vector拼在一起作为网络整体的representation vector
+- 最后证明了skip gram with negative sampling是GraRep的特例。这和TADW证明deepwalk的random walk是一种矩阵分解不谋而合。
+- 矩阵的观点
+
+### 算法参数
+
+- 超参数k来表示当前节点与距离当前节点k步的节点的关系
+(k=6 for blogcatalog) 
+- openne的说明:--kstep, use k-step transition probability matrix（make sure representation-size%k-step == 0).
