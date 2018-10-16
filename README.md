@@ -61,3 +61,18 @@
 - 超参数k来表示当前节点与距离当前节点k步的节点的关系
 (k=6 for blogcatalog) 
 - openne的说明:--kstep, use k-step transition probability matrix（make sure representation-size%k-step == 0).
+
+
+## LINE
+
+### 思路
+引入了一阶和二阶的相似度概念：
+    - 一阶：直接相连
+    - 二阶：邻居类似
+然后用KL散度针对一阶和二阶的相似度设计了目标函数；二阶相似度考虑了条件概率密度和边的权重；最后将一阶feature和二阶feature拼在一起作为LINE提出来的feature
+为了大量级运算的优化，用负采样的方法，来进行权重更新；还有为了避免边的权重的方差过大导致的难以设置学习率的问题，基于边的权值大小来设置采样的概率，对边也进行了采样。
+
+###　算法参数
+--negative-ratio, 负采样的样本个数　the default is 5;
+--order, 1 for the 1st-order, 2 for the 2nd-order and 3 for 1st + 2nd; the default is 3;
+--no-auto-save, no early save when training LINE; this is an action; when training LINE, we will calculate F1 scores every epoch. If current F1 is the best F1, the embeddings will be saved.
