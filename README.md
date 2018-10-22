@@ -76,3 +76,17 @@
 --negative-ratio, 负采样的样本个数　the default is 5;
 --order, 1 for the 1st-order, 2 for the 2nd-order and 3 for 1st + 2nd; the default is 3;
 --no-auto-save, no early save when training LINE; this is an action; when training LINE, we will calculate F1 scores every epoch. If current F1 is the best F1, the embeddings will be saved.
+
+
+## SDNE
+
+### 思路
+为了有效捕捉高度非线性网络结构并保持全局以及局部的结构，作者在论文中提出了Structural Deep Network Embedding (SDNE) 方法。论文首次提出了一个半监督的深层模型，它具有多层非线性函数，从而能够捕获到高度非线性的网络结构。然后使用一阶和二阶邻近关系来保持网络结构。二阶邻近关系被无监督学习用来捕获全局的网络结构，一阶邻近关系使用监督学习来保留网络的局部结构。通过在半监督深度模型中联合优化它们，该方法可以保留局部和全局网络结构
+- 用了deep autoencoder 通过reconstruction来保持二阶邻近关系，同时有个加权, Xi-Xj
+- 用监督方法来保持一阶邻近关系，Yi-Yj
+- 最后再加上防止过拟合的正则项联合优化
+````
+ For each vertex, we are able to obtain its neighborhood. Accordingly, we design the unsupervised component to preserve the second-order proximity, by reconstructing the neighborhood structure of each vertex. Meanwhile, for a small portion of pairs of nodes, we can obtain their pairwise similarities, i.e. the ﬁrst-order proximities. Therefore, we design the supervised component to exploit the ﬁrst-order proximity as the supervised information to reﬁne the representations in the latent space. By jointly optimizing them in the proposed semi-supervised deep model, SDNE can preserve the highly-nonlinear local-global networkstructurewellandisrobusttosparsenetworks. 
+ ````
+
+###　算法参数
