@@ -91,7 +91,6 @@
  ``
 
 ###　算法参数
-<<<<<<< HEAD
 
 --encoder-list, a list of numbers of the neuron at each encoder layer, the last number is the dimension of the output node representation, the default is [1000, 128]
 --alpha, alpha is a hyperparameter in SDNE that controls the first order proximity loss, the default is 1e-6
@@ -100,5 +99,3 @@
 --nu2, parameter controls l2-loss of weights in autoencoder, the default is 1e-4
 --bs, batch size, the default is 200
 --lr, learning rate, the default is 0.01
-=======
->>>>>>> cadd154b637fd56c5939dca9029696ee5a11d491
