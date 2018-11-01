@@ -83,12 +83,13 @@
 
 ### 思路
 为了有效捕捉高度非线性网络结构并保持全局以及局部的结构，作者在论文中提出了Structural Deep Network Embedding (SDNE) 方法。论文首次提出了一个半监督的深层模型，它具有多层非线性函数，从而能够捕获到高度非线性的网络结构。然后使用一阶和二阶邻近关系来保持网络结构。二阶邻近关系被无监督学习用来捕获全局的网络结构，一阶邻近关系使用监督学习来保留网络的局部结构。通过在半监督深度模型中联合优化它们，该方法可以保留局部和全局网络结构
-- 用了deep autoencoder 通过reconstruction来保持二阶邻近关系，同时有个加权, Xi-Xj
+- 用了deep autoencoder 通过reconstruction来保持二阶邻近关系，同时有个加权B, Xi-Xj
 - 用监督方法来保持一阶邻近关系，Yi-Yj
 - 最后再加上防止过拟合的正则项联合优化
 ``
  For each vertex, we are able to obtain its neighborhood. Accordingly, we design the unsupervised component to preserve the second-order proximity, by reconstructing the neighborhood structure of each vertex. Meanwhile, for a small portion of pairs of nodes, we can obtain their pairwise similarities, i.e. the ﬁrst-order proximities. Therefore, we design the supervised component to exploit the ﬁrst-order proximity as the supervised information to reﬁne the representations in the latent space. By jointly optimizing them in the proposed semi-supervised deep model, SDNE can preserve the highly-nonlinear local-global networkstructurewellandisrobusttosparsenetworks. 
  ``
+When α = 0, the performance is totally determined by the second-order proximity. And the larger the α, the more the model concentratesontheﬁrst-orderproximity
 
 ###　算法参数
 
@@ -105,3 +106,12 @@
 --bs, batch size, the default is 200
 
 --lr, learning rate, the default is 0.01
+
+
+## HOPE
+
+### 思路
+这个算法主要使用 high-order proximity preserved embedding (HOPE) method来解决有向图的embedding。为了避免矩阵分解的运输复杂度，他们使用了广义的SVD分解。解决边的方向问题的核心想法是，每个点学两个embedding，一个source，一个target，如果有从点v到点u的边，那么v的source embedding 和u的target embedding值就很接近，如果没有从u到v的边，那么u的source embedding 和v的target embedding值就差别很大
+
+###　算法参数
+就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
