@@ -5,7 +5,7 @@
 
 ### 思路
 
-核心思想就是使用randomwalk对graph进行采样，将获得的vertex序列当作SkipGram模型中的“句子”，构造一个语料库，丢给word2vec训练得到latent representation，最后丢给下流的分类器去做分类。
+核心思想就是使用randomwalk对graph进行采样，将获得的vertex序列当作SkipGram模型中的“句子”，构造一个语料库，丢给word2vec训练得到latent representation，最后丢给downstream的分类器去做分类。
 另外，为了降低SkipGram中计算概率的复杂度，引入了一个分层softmax算法。
 
 ### 算法参数
@@ -105,13 +105,25 @@ When α = 0, the performance is totally determined by the second-order proximity
 
 --bs, batch size, the default is 200
 
+
+
 --lr, learning rate, the default is 0.01
 
 
 ## HOPE
 
 ### 思路
-这个算法主要使用 high-order proximity preserved embedding (HOPE) method来解决有向图的embedding。为了避免矩阵分解的运输复杂度，他们使用了广义的SVD分解。解决边的方向问题的核心想法是，每个点学两个embedding，一个source，一个target，如果有从点v到点u的边，那么v的source embedding 和u的target embedding值就很接近，如果没有从u到v的边，那么u的source embedding 和v的target embedding值就差别很大
+这个算法主要使用 high-order proximity preserved embedding (HOPE) method来解决有向图的embedding。为了避免矩阵分解的运算复杂度，他们使用了广义的SVD分解。解决边的方向问题的核心想法是，每个点学两个embedding，一个source，一个target，如果有从点v到点u的边，那么v的source embedding 和u的target embedding值就很接近，如果没有从u到v的边，那么u的source embedding 和v的target embedding值就差别很大
 
 ###　算法参数
 就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
+
+
+## node2hash
+
+### 思路
+这个算法的创新点有两个，一个是使用了新的proximity matrix（size也是|V|*|V|）来表示节点的位置分布和co-occurence概率，这个矩阵的构造仍基于random walk，作者自己定义了expected distance的概念，然后将所有节点编号为1到|V|，将window中两个共同出现的节点的expected distance之和作为矩阵中特定位置（由两个节点的标号决定）的值；第二个创新点就是提出使用feature hashing来对构造出的proximity矩阵进行降维；从实验结果上来看，他们的算法在节点关系预测(link prediction)上表现不错，在多标签分类任务上，表现一般，不过他们抽出来的proximity matrix表现还挺好；这篇论文比较值得借鉴和移植的就是他们的proximity matrix，这个是个挺框架性的东西，可以在一些基于矩阵分解的NE算法中进行尝试
+
+###　算法参数
+
+window size; hash函数数目; latent dimension; walk-length; number of walks
