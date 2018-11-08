@@ -120,6 +120,7 @@ When α = 0, the performance is totally determined by the second-order proximity
 
 
 ## node2hash
+*Feature Hashing for Network Representation Learning*
 
 ### 思路
 这个算法的创新点有两个，一个是使用了新的proximity matrix（size也是|V|*|V|）来表示节点的位置分布和co-occurence概率，这个矩阵的构造仍基于random walk，作者自己定义了expected distance的概念，然后将所有节点编号为1到|V|，将window中两个共同出现的节点的expected distance之和作为矩阵中特定位置（由两个节点的标号决定）的值；第二个创新点就是提出使用feature hashing来对构造出的proximity矩阵进行降维；从实验结果上来看，他们的算法在节点关系预测(link prediction)上表现不错，在多标签分类任务上，表现一般，不过他们抽出来的proximity matrix表现还挺好；这篇论文比较值得借鉴和移植的就是他们的proximity matrix，这个是个挺框架性的东西，可以在一些基于矩阵分解的NE算法中进行尝试
