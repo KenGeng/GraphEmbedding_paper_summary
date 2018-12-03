@@ -93,7 +93,7 @@
 When α = 0, the performance is totally determined by the second-order proximity. And the larger the α, the more the model concentratesontheﬁrst-orderproximity
 
 
-###　算法参数
+### 算法参数
 
 --encoder-list, a list of numbers of the neuron at each encoder layer, the last number is the dimension of the output node representation, the default is [1000, 128]
 
@@ -118,7 +118,7 @@ When α = 0, the performance is totally determined by the second-order proximity
 这个算法主要使用 high-order proximity preserved embedding (HOPE) method来解决有向图的embedding。为了避免矩阵分解的运算复杂度，他们使用了广义的SVD分解。解决边的方向问题的核心想法是，每个点学两个embedding，一个source，一个target，如果有从点v到点u的边，那么v的source embedding 和u的target embedding值就很接近，如果没有从u到v的边，那么u的source embedding 和v的target embedding值就差别很大
 
 
-###　算法参数
+### 算法参数
 
 就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
 
