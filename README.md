@@ -89,7 +89,9 @@
 ``
  For each vertex, we are able to obtain its neighborhood. Accordingly, we design the unsupervised component to preserve the second-order proximity, by reconstructing the neighborhood structure of each vertex. Meanwhile, for a small portion of pairs of nodes, we can obtain their pairwise similarities, i.e. the ﬁrst-order proximities. Therefore, we design the supervised component to exploit the ﬁrst-order proximity as the supervised information to reﬁne the representations in the latent space. By jointly optimizing them in the proposed semi-supervised deep model, SDNE can preserve the highly-nonlinear local-global networkstructurewellandisrobusttosparsenetworks. 
  ``
+ 
 When α = 0, the performance is totally determined by the second-order proximity. And the larger the α, the more the model concentratesontheﬁrst-orderproximity
+
 
 ###　算法参数
 
@@ -115,7 +117,9 @@ When α = 0, the performance is totally determined by the second-order proximity
 ### 思路
 这个算法主要使用 high-order proximity preserved embedding (HOPE) method来解决有向图的embedding。为了避免矩阵分解的运算复杂度，他们使用了广义的SVD分解。解决边的方向问题的核心想法是，每个点学两个embedding，一个source，一个target，如果有从点v到点u的边，那么v的source embedding 和u的target embedding值就很接近，如果没有从u到v的边，那么u的source embedding 和v的target embedding值就差别很大
 
+
 ###　算法参数
+
 就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
 
 
