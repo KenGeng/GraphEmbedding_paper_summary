@@ -45,7 +45,8 @@
 
 ### 算法参数
 
-表示向量维度2k和 \lambda (hyperparameter in TADW that controls the weight of regularization term)
+- 表示向量维度2k
+- lambda (hyperparameter in TADW that controls the weight of regularization term)
 
 
 ## GraRep
@@ -86,6 +87,7 @@
 - 用了deep autoencoder 通过reconstruction来保持二阶邻近关系，同时有个加权B, Xi-Xj
 - 用监督方法来保持一阶邻近关系，Yi-Yj
 - 最后再加上防止过拟合的正则项联合优化
+
 ``
  For each vertex, we are able to obtain its neighborhood. Accordingly, we design the unsupervised component to preserve the second-order proximity, by reconstructing the neighborhood structure of each vertex. Meanwhile, for a small portion of pairs of nodes, we can obtain their pairwise similarities, i.e. the ﬁrst-order proximities. Therefore, we design the supervised component to exploit the ﬁrst-order proximity as the supervised information to reﬁne the representations in the latent space. By jointly optimizing them in the proposed semi-supervised deep model, SDNE can preserve the highly-nonlinear local-global networkstructurewellandisrobusttosparsenetworks. 
  ``
@@ -95,17 +97,17 @@ When α = 0, the performance is totally determined by the second-order proximity
 
 ### 算法参数
 
---encoder-list, a list of numbers of the neuron at each encoder layer, the last number is the dimension of the output node representation, the default is [1000, 128]
+- --encoder-list, a list of numbers of the neuron at each encoder layer, the last number is the dimension of the output node representation, the default is [1000, 128]
 
---alpha, alpha is a hyperparameter in SDNE that controls the first order proximity loss, the default is 1e-6
+- --alpha, alpha is a hyperparameter in SDNE that controls the first order proximity loss, the default is 1e-6
 
---beta, beta is used for construct matrix B, the default is 5
+- --beta, beta is used for construct matrix B, the default is 5
 
---nu1, parameter controls l1-loss of weights in autoencoder, the default is 1e-5
+- --nu1, parameter controls l1-loss of weights in autoencoder, the default is 1e-5
 
---nu2, parameter controls l2-loss of weights in autoencoder, the default is 1e-4
+- --nu2, parameter controls l2-loss of weights in autoencoder, the default is 1e-4
 
---bs, batch size, the default is 200
+- --bs, batch size, the default is 200
 
 
 
@@ -120,7 +122,7 @@ When α = 0, the performance is totally determined by the second-order proximity
 
 ### 算法参数
 
-就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
+- 就是矩阵分解，唯一的参数就是是embedding的维度，值得注意的是在OpenNe测试HOPE时输入的维度是source embedding 和 target embedding 的维度之和,即128=64source+64target
 
 
 ## node2hash
@@ -129,6 +131,10 @@ When α = 0, the performance is totally determined by the second-order proximity
 ### 思路
 这个算法的创新点有两个，一个是使用了新的proximity matrix（size也是|V|*|V|）来表示节点的位置分布和co-occurence概率，这个矩阵的构造仍基于random walk，作者自己定义了expected distance的概念，然后将所有节点编号为1到|V|，将window中两个共同出现的节点的expected distance之和作为矩阵中特定位置（由两个节点的标号决定）的值；第二个创新点就是提出使用feature hashing来对构造出的proximity矩阵进行降维；从实验结果上来看，他们的算法在节点关系预测(link prediction)上表现不错，在多标签分类任务上，表现一般，不过他们抽出来的proximity matrix表现还挺好；这篇论文比较值得借鉴和移植的就是他们的proximity matrix，这个是个挺框架性的东西，可以在一些基于矩阵分解的NE算法中进行尝试
 
-###　算法参数
+### 算法参数
 
-window size; hash函数数目; latent dimension; walk-length; number of walks
+- window size; 
+- hash函数数目; 
+- latent dimension; 
+- walk-length;
+- number of walks
