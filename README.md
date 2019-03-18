@@ -89,7 +89,7 @@
 ``
  For each vertex, we are able to obtain its neighborhood. Accordingly, we design the unsupervised component to preserve the second-order proximity, by reconstructing the neighborhood structure of each vertex. Meanwhile, for a small portion of pairs of nodes, we can obtain their pairwise similarities, i.e. the ﬁrst-order proximities. Therefore, we design the supervised component to exploit the ﬁrst-order proximity as the supervised information to reﬁne the representations in the latent space. By jointly optimizing them in the proposed semi-supervised deep model, SDNE can preserve the highly-nonlinear local-global networkstructurewellandisrobusttosparsenetworks. 
  ``
- 
+
 When α = 0, the performance is totally determined by the second-order proximity. And the larger the α, the more the model concentratesontheﬁrst-orderproximity
 
 
@@ -132,3 +132,11 @@ When α = 0, the performance is totally determined by the second-order proximity
 ### 算法参数
 
 window size; hash函数数目; latent dimension; walk-length; number of walks
+
+## Self-Paced Network Embedding
+### 思路
+使用self-pace的思想改良了负采样的过程. 
+
+第一种方法是用softmax定义选择负采样的节点的概率分布,而不是像LINE那样基于节点度数.然后使用self-pace的思想,先选择简单的负样本开始训练,再逐渐选择困难的负样本进行训练(这里的"简单"与"困难"指的是如果一个负样本多次迭代后在embedding space里离中心节点比较近,则可以认为将这个节点与中心节点分开比较困难,所以我们直觉地可以认为它可能包含更多的信息).self-pace的实现其实就是加了一个阈值,本身困难的样本被选择的概率比较大,通过设置这个阈值,每次选小于阈值的样本,这样可以选一些简单的样本,而阈值逐渐增大,也就更倾向于选择困难的样本.
+
+论文第二种方法是套了个GAN,用一个generator生成的概率分布来采样负样本,这个generator会训练一个新的embedding vector(?),然后同样套上一个self-pace的阈值函数来选择样本.
